@@ -1,34 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
-    <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/styles.css" />
-  </head>
-  <body>
-    <section>
-      <div class="container">
-        <form class="js-form" action="submit">
-          <input
-            type="text"
-            placeholder="Search here..."
-            class="search-input"
-            autocomplete="off"
-            required
-          />
-          <button type="submit">Search</button>
-        </form>
-      </div>
-      <div class="loader"></div>
-      <div class="gallery-div">
-        <ul class="gallery"></ul>
-      </div>
-    </section>
-    <script type="module" src="./main.js"></script>
-    <script type="module" src="./js/pixabay-api.js"></script>
-    <script type="module" src="./js/render-functions.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vanilla App Template</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+
+<body>
+  <div class="app">
+    <form action="#" class="app-form">
+      <input type="text" name="search" id="search">
+      <input type="submit" value="Search">
+    </form>
+    <ul class="gallery">
+
+    </ul>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
 </html>
