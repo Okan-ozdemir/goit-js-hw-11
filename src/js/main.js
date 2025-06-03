@@ -1,14 +1,73 @@
-// Axios
 import axios from 'axios';
-// Izitoast
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-// SimpleLightBox
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const form = document.querySelector('.app-form');
 const gallery = document.querySelector('.gallery');
+const searchInput = document.querySelector('#search');
+
+const API_KEY = '21250106-0015936de5f184b8';
+const API_URL = 'https://pixabay.com/api/';
+
+const fetchImages = async (query) => {
+  try {
+    const response = await axios.get(API_URL, {
+      params: {
+        key: API_KEY,
+        q: query,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        per_page: 12
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error fetching images');
+  }
+};
+
+const displayImages = (images) => {
+  gallery.innerHTML = '';
+  
+  images.forEach(img => {
+    const galleryItem = document.createElement('div');
+    galleryItem.className = 'gallery-item';
+    
+    galleryItem.innerHTML = `
+      <img src="${img.webformatURL}" alt="${img.tags}">
+      <div class="content">
+        <div class="info">
+          <span class="key">Likes:</span>
+          <span class="value">${img.likes}</span>
+        </div>
+        <div class="info">
+          <span class="key">Views:</span>
+          <span class="value">${img.views}</span>
+        </div>
+      </div>
+    `;
+    
+    gallery.appendChild(galleryItem);
+  });
+};
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const searchTerm = searchInput.value.trim();
+  if (!searchTerm) {
+    alert('Please enter a search term');
+    return;
+  }
+
+  const data = await fetchImages(searchTerm);
+  if (data.hits.length === 0) {
+    alert('No images found');
+    return;
+  }
+
+  displayImages(data.hits);
+});
 
 form.addEventListener('submit', event => {
   event.preventDefault(); // Sayfa Yenilenmesini Engeller
