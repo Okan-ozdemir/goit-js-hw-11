@@ -13,6 +13,10 @@
     "izitoast": "^1.4.0",
     "simplelightbox": "^2.14.3"
   },
+  "resolutions": {
+    "izitoast": "1.4.0",
+    "simplelightbox": "2.14.3"
+  },
   "devDependencies": {
     "vite": "^5.4.19"
   }

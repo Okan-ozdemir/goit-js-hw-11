@@ -1,7 +1,7 @@
 import axios from 'axios';
-import iziToast from 'izitoast';
+import iziToast from 'izitoast/dist/js/iziToast.min.js';
 import 'izitoast/dist/css/iziToast.min.css';
-import SimpleLightbox from 'simplelightbox';
+import * as SimpleLightbox from 'simplelightbox/dist/simple-lightbox.min.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 // DOM elementlerini seç
@@ -96,7 +96,7 @@ const displayImages = (images) => {
   gallery.innerHTML = markup;
   
   // SimpleLightbox initialize
-  const lightbox = new SimpleLightbox('.gallery-link', {
+  const lightbox = new SimpleLightbox.default('.gallery-link', {
     captionsData: 'alt',
     captionDelay: 250
   });
