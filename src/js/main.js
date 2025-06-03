@@ -1,14 +1,29 @@
+console.log('JavaScript yüklendi');
+
+// Axios yükle
 import axios from 'axios';
 
+// DOM elementlerini seç
 const form = document.querySelector('.app-form');
 const gallery = document.querySelector('.gallery');
 const searchInput = document.querySelector('#search');
 
-const API_KEY = '21250106-0015936de5f184b8';
+console.log('Form:', form);
+console.log('Gallery:', gallery);
+console.log('Search Input:', searchInput);
+
+if (!form || !gallery || !searchInput) {
+  console.error('Bir veya daha fazla DOM elementi bulunamadı');
+}
+
+// API anahtarı ve URL
+const API_KEY = '50661251-9a872d0be11f09c3db9225566';
 const API_URL = 'https://pixabay.com/api/';
 
+// API'den görüntüleri al
 const fetchImages = async (query) => {
   try {
+    console.log('API çağrısı yapılıyor:', query);
     const response = await axios.get(API_URL, {
       params: {
         key: API_KEY,
@@ -16,18 +31,27 @@ const fetchImages = async (query) => {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
-        per_page: 12
+        per_page: 12,
+        lang: 'en' // Dil parametresini ekliyoruz
       }
     });
+    console.log('API yanıt:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error:', error);
-    alert('Error fetching images');
+    console.error('Hata:', error);
+    if (error.response && error.response.data && error.response.data.message) {
+      alert(error.response.data.message);
+    } else {
+      alert('Error fetching images: ' + error.message);
+    }
+    return { hits: [] };
   }
 };
 
+// Görüntüleri göster
 const displayImages = (images) => {
   gallery.innerHTML = '';
+  console.log('Görüntüler gösteriliyor:', images.length);
   
   images.forEach(img => {
     const galleryItem = document.createElement('div');
@@ -51,8 +75,10 @@ const displayImages = (images) => {
   });
 };
 
+// Form gönderildiğinde
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  console.log('Form gönderildi');
   
   const searchTerm = searchInput.value.trim();
   if (!searchTerm) {
@@ -60,6 +86,7 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
+  console.log('Arama terimi:', searchTerm);
   const data = await fetchImages(searchTerm);
   if (data.hits.length === 0) {
     alert('No images found');
@@ -67,69 +94,4 @@ form.addEventListener('submit', async (e) => {
   }
 
   displayImages(data.hits);
-});
-
-form.addEventListener('submit', event => {
-  event.preventDefault(); // Sayfa Yenilenmesini Engeller
-  gallery.innerHTML = ''; // Her Submit'te Galeri Temizlenir
-  const searchValue = form.elements.search.value;
-
-  axios
-    .get('https://pixabay.com/api/', {
-      params: {
-        key: '21250106-0015933422f1e636de5f184b8',
-        q: searchValue,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-      },
-    })
-    .then(response => {
-      console.log(response);
-      const images = response.data.hits;
-      if (images.length === 0) {
-        iziToast.error({
-          position: 'topRight',
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-        });
-      } else {
-        images.forEach(img => {
-          console.log(img);
-          gallery.innerHTML += `
-          <li class="gallery-item">
-          <a href="${img.largeImageURL}">
-            <img src="${img.webformatURL}" width="360" height="200" alt="${img.tags}" />
-          </a>
-          <div class="content">
-            <div class="info">
-              <h5 class="key">Likes</h5>
-              <p class="value">${img.likes}</p>
-            </div>
-            <div class="info">
-              <h5 class="key">Views</h5>
-              <p class="value">${img.views}</p>
-            </div>
-            <div class="info">
-              <h5 class="key">Comments</h5>
-              <p class="value">${img.comments}</p>
-            </div>
-            <div class="info">
-              <h5 class="key">Downloads</h5>
-              <p class="value">${img.downloads}</p>
-            </div>
-          </div>
-        </li>`;
-        });
-
-        const lightBox = new SimpleLightbox('.gallery a', {
-          /* options */
-        });
-
-        lightBox.refresh();
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
 });
