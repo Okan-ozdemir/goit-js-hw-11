@@ -4,7 +4,7 @@ const form = document.querySelector('.app-form');
 const gallery = document.querySelector('.gallery');
 const searchInput = document.querySelector('#search');
 
-const API_KEY = import.meta.env.VITE_PIXABAY_API_KEY;
+const API_KEY = '21250106-0015936de5f184b8';
 const API_URL = 'https://pixabay.com/api/';
 
 const fetchImages = async (query) => {
