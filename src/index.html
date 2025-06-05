@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Gallery</title>
+  <title>Görsel Arama Uygulaması</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css">
   <link rel="stylesheet" href="./css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js"></script>
 </head>
 <body>
-  <div class="app">
-    <div class="search-form-container">
+  <header class="header">
+    <div class="container">
       <form class="app-form">
-        <input type="text" name="search" id="search" placeholder="Search images...">
-        <button type="submit">Search</button>
+        <input
+          type="text"
+          name="search"
+          id="search"
+          autocomplete="off"
+          placeholder="Görsel ara..."
+          required
+        />
+        <button type="submit" class="search-button">
+          <span class="button-text">Ara</span>
+        </button>
       </form>
     </div>
-    <div class="gallery"></div>
-    <div class="loader"></div>
-  </div>
-  <script type="module" src="./main.js"></script>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="gallery"></div>
+      <div class="loader"></div>
+      <div class="load-more-container">
+        <button type="button" class="load-more" style="display: none;">Daha Fazla Yükle</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

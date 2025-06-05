@@ -1,8 +1,13 @@
+/* Base Styles */
 :root {
-  --primary-color: #2196f3;
-  --text-color: #212121;
-  --background-color: #ffffff;
-  --border-color: #e0e0e0;
+  --primary-color: #4e75ff;
+  --primary-hover: #6c8cff;
+  --text-color: #2e2f42;
+  --secondary-text: #fff;
+  --background: #fff;
+  --border-color: #808080;
+  --card-bg: #f6f6f6;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -12,91 +17,245 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: var(--background-color);
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
   color: var(--text-color);
+  background-color: var(--background);
 }
 
-.app {
-  max-width: 1280px;
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Layout */
+.container {
+  max-width: 1128px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 16px;
 }
 
-.search-form-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 40px;
+/* Header */
+.header {
+  padding: 20px 0;
+  background: linear-gradient(90deg, #4e75ff 0%, #6c8cff 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .app-form {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   max-width: 600px;
-  width: 100%;
+  margin: 0 auto;
 }
 
 .app-form input {
   flex: 1;
-  padding: 12px;
-  border: 2px solid var(--border-color);
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
   outline: none;
+  transition: border-color var(--transition);
 }
 
-.app-form button {
+.app-form input:focus {
+  border-color: var(--primary-color);
+}
+
+.search-button {
   padding: 12px 24px;
   background-color: var(--primary-color);
-  color: white;
-  border: none;
+  color: var(--secondary-text);
   border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  font-weight: 500;
+  transition: background-color var(--transition);
 }
 
-.app-form button:hover {
-  background-color: #1976d2;
+.search-button:hover,
+.search-button:focus {
+  background-color: var(--primary-hover);
 }
 
+/* Gallery */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 32px 0;
 }
 
 .gallery-item {
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .gallery-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .gallery-item img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 200px;
+  object-fit: cover;
 }
 
 .info {
-  padding: 15px;
-  background-color: rgba(255, 255, 255, 0.95);
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--card-bg);
 }
 
 .info-item {
-  margin-bottom: 8px;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-color);
 }
 
 .info-item b {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+/* Daha fazla yükle butonu */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 40px;
+  width: 100%;
+}
+
+.load-more {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #4e75ff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: none; /* Başlangıçta gizli */
+}
+
+.load-more:hover {
+  background-color: #4e75ff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.load-more:disabled {
+  background-color: #cfcfcf;
+  cursor: not-allowed;
+}
+
+.iziToast.iziToast-color-red,
+.iziToast.iziToast-color-error {
+  background-color: #ff4d4d;
+  border-color: #ff4d4d;
+  color: white;
+}
+
+/* Hata mesajı için özel stil */
+.iziToast.iziToast-color-error .iziToast-close {
+  color: white;
+  opacity: 0.8;
+}
+
+.iziToast.iziToast-color-error .iziToast-message {
+  color: white;
+}
+
+/* Loader */
+.loader {
+  display: none;
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Daha Fazla Yükle Butonu */
+.load-more-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.load-more {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.load-more:hover {
+  background-color: #45a049;
+}
+
+.load-more:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.load-more.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  
+  .app-form {
+    flex-direction: column;
+  }
+  
+  .search-button {
+    width: 100%;
+  }
+}
+
+/* SimpleLightbox Customization */
+.sl-wrapper .sl-navigation button,
+.sl-wrapper .sl-close,
+.sl-wrapper .sl-counter {
+  color: white;
+}
+
+.sl-wrapper .sl-navigation button:hover,
+.sl-wrapper .sl-close:hover {
   color: var(--primary-color);
-  margin-right: 8px;
 }
 
 .loader {
