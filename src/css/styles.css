@@ -135,7 +135,7 @@ button {
   margin-bottom: 4px;
 }
 
-/* Daha fazla yükle butonu */
+/* Load More Button */
 .load-more-container {
   display: flex;
   justify-content: center;
@@ -153,7 +153,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: none; /* Başlangıçta gizli */
+  display: none; /* Hidden by default */
 }
 
 .load-more:hover {
@@ -173,7 +173,7 @@ button {
   color: white;
 }
 
-/* Hata mesajı için özel stil */
+/* Custom style for error messages */
 .iziToast.iziToast-color-error .iziToast-close {
   color: white;
   opacity: 0.8;
@@ -191,7 +191,7 @@ button {
   animation: spin 1s linear infinite;
 }
 
-/* Daha Fazla Yükle Butonu */
+/* Load More Button */
 .load-more-container {
   text-align: center;
   margin: 20px 0;

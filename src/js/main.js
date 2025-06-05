@@ -1,27 +1,27 @@
-// Kütüphaneleri import et
+// Import libraries
 import axios from 'axios';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-console.log('Kütüphaneler yüklendi');
+console.log('Libraries loaded');
 
-// DOM elementlerini seç
+// Select DOM elements
 const form = document.querySelector('.app-form');
 const gallery = document.querySelector('.gallery');
 const searchInput = document.querySelector('#search');
 const loader = document.querySelector('.loader');
 const loadMoreBtn = document.querySelector('.load-more');
 
-// Sayfalama için değişkenler
+// Pagination variables
 let currentPage = 1;
-const perPage = 20; // Sayfa başına görsel sayısı
+const perPage = 20; // Number of images per page
 let currentQuery = '';
 let totalHits = 0;
 
-// Lightbox'ı başlat
+// Initialize Lightbox
 let lightbox;
 
-// Sayfa yüklendiğinde lightbox'ı başlat
+// Initialize lightbox when page loads
 document.addEventListener('DOMContentLoaded', () => {
   lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
@@ -29,26 +29,26 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Hata kontrolü
+// Error check
 if (!form || !gallery || !searchInput || !loader) {
-  console.error('Gerekli DOM elementleri bulunamadı');
+  console.error('Required DOM elements not found');
   iziToast.error({
-    title: 'Hata',
-    message: 'Sayfa yüklenirken bir hata oluştu',
+    title: 'Error',
+    message: 'An error occurred while loading the page',
     position: 'topRight'
   });
 }
 
-// API anahtarı ve URL
+// API key and URL
 const API_KEY = '50661251-9a872d0be11f09c3db9225566';
 const API_URL = 'https://pixabay.com/api/';
 
-// Yükleme göstergesini göster/gizle
+// Show/hide loading indicator
 const toggleLoader = (show) => {
   loader.style.display = show ? 'block' : 'none';
 };
 
-// Hata göster
+// Show error message
 const showError = (message) => {
   iziToast.show({
     message: message,
@@ -62,7 +62,7 @@ const showError = (message) => {
   });
 };
 
-// Bilgi mesajı göster
+// Show info message
 const showInfo = (message) => {
   iziToast.show({
     message: message,
@@ -76,13 +76,13 @@ const showInfo = (message) => {
   });
 };
 
-// Görselleri getir
+// Fetch images from API
 const fetchImages = async (query, page = 1) => {
   try {
     toggleLoader(true);
     
-    console.log('API isteği başlatılıyor...');
-    console.log('Aranan terim:', query);
+    console.log('Starting API request...');
+    console.log('Search term:', query);
     
     const params = {
       key: API_KEY,
@@ -94,7 +94,7 @@ const fetchImages = async (query, page = 1) => {
       page: page
     };
     
-    console.log('Gönderilen parametreler:', params);
+    console.log('Sending parameters:', params);
     
     const response = await axios.get(API_URL, { 
       params,
@@ -103,51 +103,51 @@ const fetchImages = async (query, page = 1) => {
       }
     });
     
-    console.log('API yanıtı alındı:', response);
-    console.log('Toplam sonuç:', response.data.total);
-    console.log('Dönen görsel sayısı:', response.data.hits?.length || 0);
+    console.log('API response received:', response);
+    console.log('Total results:', response.data.total);
+    console.log('Images returned:', response.data.hits?.length || 0);
     
     if (!response.data.hits || response.data.hits.length === 0) {
-      // Boş sonuç durumunda özel bir hata fırlatıyoruz
-      const error = new Error('Görsel bulunamadı');
-      error.isEmpty = true; // Özel bir bayrak ekliyoruz
+      // Throw a custom error for empty results
+      const error = new Error('No images found');
+      error.isEmpty = true; // Adding a custom flag
       throw error;
     }
     
     return response.data;
     
   } catch (error) {
-    // Sadece ağ hatası gibi beklenmeyen hatalar için genel hata mesajı göster
+    // Show error message only for unexpected errors like network issues
     if (!error.isEmpty) {
-      showError('Görseller yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+      showError('An error occurred while loading images. Please try again later.');
     }
-    console.error('API Hatası:', error);
+    console.error('API Error:', error);
     return { hits: [], totalHits: 0 };
   } finally {
     toggleLoader(false);
   }
 };
 
-// Görüntüleri göster
+// Display images in the gallery
 const displayImages = (images) => {
-  console.log('displayImages çağrıldı, görsel sayısı:', images?.length || 0);
+  console.log('displayImages called, image count:', images?.length || 0);
   
   if (!images || images.length === 0) {
-    const errorMsg = 'Üzgünüz, arama sorgunuza uygun görsel bulunamadı. Lütfen farklı bir terim deneyin.';
+    const errorMsg = 'Sorry, no images found matching your search. Please try a different term.';
     console.warn(errorMsg);
     showError(errorMsg);
     return;
   }
 
-  console.log('Görseller işleniyor...');
+  console.log('Processing images...');
   
   try {
-    // Mevcut içeriği temizle
+    // Clear existing content
     // gallery.innerHTML = '';
     
-    // Her bir görsel için kart oluştur
+    // Create card for each image
     images.forEach((img, index) => {
-      console.log(`Görsel ${index + 1}:`, {
+      console.log(`Image ${index + 1}:`, {
         webformatURL: img.webformatURL,
         largeImageURL: img.largeImageURL,
         tags: img.tags
@@ -162,7 +162,7 @@ const displayImages = (images) => {
             src="${img.webformatURL}" 
             alt="${img.tags}" 
             loading="lazy"
-            onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Resim+Yüklenemedi'"
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Image+Not+Available'"
           />
         </a>
         <div class="info">
@@ -184,8 +184,8 @@ const displayImages = (images) => {
       gallery.appendChild(galleryItem);
     });
     
-    console.log('Lightbox yenileniyor...');
-    // Lightbox'ı yeniden başlat
+    console.log('Refreshing Lightbox...');
+    // Reinitialize Lightbox
     if (lightbox) {
       lightbox.destroy();
     }
@@ -194,62 +194,61 @@ const displayImages = (images) => {
       captionDelay: 250,
     });
     
-    console.log('Görseller başarıyla yüklendi!');
+    console.log('Images loaded successfully!');
   } catch (error) {
-    console.error('Görseller gösterilirken hata oluştu:', error);
-    showError('Görseller gösterilirken bir hata oluştu. Lütfen sayfayı yenileyip tekrar deneyin.');
+    console.error('Error displaying images:', error);
+    showError('An error occurred while displaying images. Please refresh the page and try again.');
   }
 };
 
-// Form gönderildiğinde
-
+// When form is submitted
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   
   const searchTerm = searchInput.value.trim();
   
   if (!searchTerm) {
-    showError('Lütfen bir arama terimi girin');
+    showError('Please enter a search term');
     return;
   }
   
   try {
-    console.log('Arama başlatılıyor...');
+    console.log('Starting search...');
     currentQuery = searchTerm;
     currentPage = 1;
     
-    // Önceki sonuçları temizle
+    // Clear previous results
     gallery.innerHTML = '';
     
-    // Yükleme göstergesini göster
+    // Show loading indicator
     toggleLoader(true);
     
-    // İlk sayfayı yükle
+    // Load first page
     const data = await fetchImages(searchTerm, currentPage);
     
     if (data.hits && data.hits.length > 0) {
       totalHits = data.totalHits;
       displayImages(data.hits);
       
-      // Eğer daha fazla sonuç varsa butonu göster
+      // Show button if there are more results
       if (data.hits.length >= perPage && currentPage * perPage < totalHits) {
         loadMoreBtn.style.display = 'block';
       } else {
         loadMoreBtn.style.display = 'none';
       }
     } else {
-      showError('Aradığınız kriterlere uygun görsel bulunamadı.');
+      showError('No images found matching your criteria.');
       loadMoreBtn.style.display = 'none';
     }
   } catch (error) {
-    console.error('Arama sırasında hata oluştu:', error);
+    console.error('Error during search:', error);
     loadMoreBtn.style.display = 'none';
   } finally {
     toggleLoader(false);
   }
 });
 
-// Daha fazla yükle butonuna tıklandığında
+// When load more button is clicked
 loadMoreBtn.addEventListener('click', async () => {
   if (!currentQuery) return;
   
@@ -262,14 +261,14 @@ loadMoreBtn.addEventListener('click', async () => {
     if (data.hits && data.hits.length > 0) {
       displayImages(data.hits);
       
-      // Eğer daha fazla sonuç yoksa butonu gizle
+      // Hide button if no more results
       if (currentPage * perPage >= totalHits) {
         loadMoreBtn.style.display = 'none';
       }
     }
   } catch (error) {
-    console.error('Daha fazla yükleme sırasında hata oluştu:', error);
-    showError('Daha fazla görsel yüklenirken bir hata oluştu.');
+    console.error('Error loading more images:', error);
+    showError('An error occurred while loading more images.');
   } finally {
     loadMoreBtn.disabled = false;
   }
